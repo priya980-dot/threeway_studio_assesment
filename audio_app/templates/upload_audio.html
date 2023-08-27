@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Audio Uploader</title>
+    <style>
+        body{
+        margin:0;
+        padding:0;
+        font-family:roboto;
+        }
+        .header{
+            background-color: #000000;
+            padding: 10px;
+            margin: auto;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+        }
+        .footer{
+            background-color: #000000;
+            padding: 10px 0;
+            margin: auto;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            bottom: 0;
+            position: absolute;
+            width: 100%;
+        }
+        .dashbody{
+            background-color: #ffffff;
+            padding: 30px;
+            width: 50%;
+            margin: 130px auto;
+            text-align: center;
+        height:300px;
+        border-radius: 10px;
+        box-shadow: 1px 1px 11px #cecece;
+        }
+        .input{
+        background-color: #f1f3f4;
+            padding: 15px 20px;
+            color: black;
+            border-radius: 31px;
+        }
+        .ply{
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .details{
+          height:500px;
+          overflow:auto;
+          width: 95%;
+          margin: auto;
+          border-radius: 15px;
+        }
+        
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        tr th{
+          background-color:#000000;
+          color:white;
+          text-align:center;
+          position: sticky;
+          top: 0;
+        }
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+          text-align:center;
+        }
+        
+         
+        </style>
+</head>
+<body>
+<div class="dashboard">
+    <div class="header">
+        Project name
+        </div>
+    <div class="dashbody">
+    <h1>Upload Audio</h1>
+    <!-- File Upload Form -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+</div>
+<!-- Uploaded Audio Table -->
+<div class="details">
+    <table>
+        <tr>
+            <th>User</th>
+            <th>Name</th>
+            <th>Audio File</th>
+            <th>Date</th>
+            <th>Extension</th>
+            <th>Size</th>
+            <th>Play</th>
+        </tr>
+        {% for audio in audios %}
+        <tr>
+            <td>{{ audio.user }}</td>
+            <td>{{ audio.name }}</td>
+            <td>{{ audio.audio.name }}</td>
+            <td>{{ audio.date }}</td>
+            <td>{{ audio.extension }}</td>
+            <td>{{ audio.size }}</td>
+            <td><audio controls><source src="{{ audio.audio.url }}" type="audio/mpeg"></audio>
+                <source src="{{ audio.audio.url }}"  type="audio/mpeg">
+                <source src="{{ audio.audio.url }}" type="audio/wav">
+                <source src="{{ audio.audio.url }}" type="audio/ogg">
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+{% if duration_exceeds_limit %}
+    <div class="warning">
+        <p>Total duration of uploaded audio files exceeds 10 minutes.</p>
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>
