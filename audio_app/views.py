@@ -20,6 +20,6 @@ def upload_audio(request):
     
     audios = UploadedAudio.objects.all() # Get all uploaded audio files
     total_duration = sum(MP3(audio.audio.path).info.length for audio in audios) # Calculate total duration of uploaded audio files
-    duration_exceeds_limit = total_duration.total_seconds() > 600  # 10 minutes in seconds
+   
     return render(request, 'upload_audio.html', {'form': form, 'audios': audios})
 
